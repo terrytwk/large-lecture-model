@@ -1,0 +1,34 @@
+# data — never commit raw or processed course content
+data/
+
+# secrets
+.env
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# vector/graph databases
+chroma_db/
+kuzu_db/
+*.db
+
+# spacy models
+en_core_web_sm*/
+
+# node
+node_modules/
+frontend/.next/
+frontend/out/
+
+# OS
+.DS_Store

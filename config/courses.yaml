@@ -1,0 +1,17 @@
+courses:
+  6.1220:
+    name: "Design and Analysis of Algorithms"
+    canvas_course_id: ""           # fill in from Canvas URL
+    gradescope_course_id: ""       # fill in from Gradescope URL
+    panopto_folder_id: ""          # fill in from Panopto
+    piazza_course_id: ""           # fill in from Piazza network ID
+    protected_assignments:
+      - "Problem Set 1"
+      - "Problem Set 2"
+      - "Problem Set 3"
+      - "Problem Set 4"
+      - "Problem Set 5"
+      - "Midterm"
+      - "Final Exam"
+    # "always" | "until_grades_released" | "until: YYYY-MM-DD"
+    protected_window: "always"

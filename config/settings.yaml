@@ -1,0 +1,20 @@
+embedding:
+  model: "BAAI/bge-small-en-v1.5"
+  device: "cpu"                    # "cpu" | "cuda" | "mps"
+  batch_size: 32
+
+retrieval:
+  mode: "hybrid"                   # "vector" | "graph" | "hybrid"
+  top_k: 8
+  vector_weight: 0.7               # graph weight = 1 - vector_weight
+
+guardrails:
+  sensitivity: "permissive"        # "conservative" | "permissive"
+
+llm:
+  model: "claude-sonnet-4-6"
+  max_tokens: 2048
+  stream: true
+
+chroma_db_path: "./chroma_db"
+kuzu_db_path: "./kuzu_db"
