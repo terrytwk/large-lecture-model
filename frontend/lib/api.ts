@@ -20,4 +20,14 @@ export interface Assignment {
   score: number | null;
   max_score: number | null;
   topics: string[];
+  html_url: string | null;
+}
+
+export interface MaterialResult {
+  id: string;
+  text: string;
+  source: string;
+  doc_type: string;
+  metadata: Record<string, unknown>;
+  score: number;
 }
