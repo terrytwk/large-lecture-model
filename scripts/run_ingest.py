@@ -14,16 +14,26 @@ sys.path.insert(0, str(ROOT))
 
 def main(course_id: str, sources: list[str]) -> None:
     cfg = yaml.safe_load((ROOT / "config/courses.yaml").read_text())
-    course_cfg = cfg["courses"][course_id]
+    courses = {str(k): v for k, v in cfg["courses"].items()}
+    course_cfg = courses[course_id]
 
-    from ingest.canvas import CanvasIngestor
-    from ingest.manual import ManualIngestor
+    def _canvas():
+        from ingest.canvas import CanvasIngestor
+        return CanvasIngestor(course_id, course_cfg)
+
+    def _manual():
+        from ingest.manual import ManualIngestor
+        return ManualIngestor(course_id, course_cfg, ROOT / "data/manual")
+
+    def _panopto():
+        from ingest.panopto import PanoptoIngestor
+        return PanoptoIngestor(course_id, course_cfg, ROOT / "data/manual")
 
     ingestor_map = {
-        "canvas": lambda: CanvasIngestor(course_id, course_cfg),
-        "manual": lambda: ManualIngestor(course_id, course_cfg, ROOT / "data/manual"),
+        "canvas": _canvas,
+        "manual": _manual,
+        "panopto": _panopto,
         # "gradescope": lambda: GradescopeIngestor(course_id, course_cfg),
-        # "panopto":    lambda: PanoptoIngestor(course_id, course_cfg),
         # "piazza":     lambda: PiazzaIngestor(course_id, course_cfg),
     }
 

@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from backend.deps import get_retriever, get_llm_client, get_settings, get_courses
 from llm.guardrails import check
 from llm.prompts import CHAT_SYSTEM, SOURCE_TEMPLATE
+from retrieval.query_parser import parse_lecture_number, lecture_canvas_names
 
 router = APIRouter()
 
@@ -35,6 +36,22 @@ def chat(req: ChatRequest) -> StreamingResponse:
 
     retriever = get_retriever(req.course_id)
     chunks = retriever.retrieve(req.query, top_k=settings["retrieval"]["top_k"])
+
+    # If the query names a specific lecture, inject its notes/slides directly
+    # so they aren't crowded out by other high-scoring chunks.
+    lecture_num = parse_lecture_number(req.query)
+    if lecture_num is not None:
+        try:
+            extra = retriever.retrieve(
+                req.query,
+                top_k=4,
+                filters={"name": {"$in": lecture_canvas_names(lecture_num)}},
+            )
+            if extra:
+                seen = {c.id for c in extra}
+                chunks = extra + [c for c in chunks if c.id not in seen]
+        except Exception:
+            pass  # fall back to unaugmented results
 
     context = "\n".join(
         SOURCE_TEMPLATE.format(

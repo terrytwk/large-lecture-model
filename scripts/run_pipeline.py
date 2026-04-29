@@ -20,7 +20,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--course", default="6.1220")
     parser.add_argument("--sources", nargs="+", default=["canvas", "manual"])
+    parser.add_argument(
+        "--correct-transcripts",
+        action="store_true",
+        help="Use LLM + lecture slides to fix ASR errors in transcripts before embedding.",
+    )
     args = parser.parse_args()
 
     run("run_ingest.py", ["--course", args.course, "--sources"] + args.sources)
-    run("run_process.py", ["--course", args.course])
+    process_args = ["--course", args.course]
+    if args.correct_transcripts:
+        process_args.append("--correct-transcripts")
+    run("run_process.py", process_args)

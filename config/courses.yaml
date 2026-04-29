@@ -1,17 +1,13 @@
 courses:
-  6.1220:
+  "6.1220":
     name: "Design and Analysis of Algorithms"
-    canvas_course_id: ""           # fill in from Canvas URL
+    canvas_course_id: "37219"      # Spring 2026
     gradescope_course_id: ""       # fill in from Gradescope URL
-    panopto_folder_id: ""          # fill in from Panopto
+    panopto_folder_id: "55a5726f-ee1e-490a-8bca-b3d000d40110"          # fill in from Panopto
     piazza_course_id: ""           # fill in from Piazza network ID
     protected_assignments:
-      - "Problem Set 1"
-      - "Problem Set 2"
-      - "Problem Set 3"
-      - "Problem Set 4"
-      - "Problem Set 5"
-      - "Midterm"
-      - "Final Exam"
+      - "Problem Set"   # matches PS 1–9
+      - "Quiz"          # matches Quiz 1, Quiz 2
+      - "Warm-up Set"   # matches all warm-ups
     # "always" | "until_grades_released" | "until: YYYY-MM-DD"
     protected_window: "always"

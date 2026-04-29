@@ -52,9 +52,19 @@ def _chunk_transcript(doc: RawDocument) -> list[Chunk]:
 
 
 def _make_chunk(doc: RawDocument, text: str, idx: int) -> Chunk:
+    # Prepend a context header so lecture/week/topic end up in the embedding,
+    # not just in metadata (which the vector search can't see).
+    parts = [doc.metadata.get("name", "")]
+    if doc.metadata.get("module"):
+        parts.append(doc.metadata["module"])
+    if doc.metadata.get("topic"):
+        parts.append(doc.metadata["topic"])
+    header = " | ".join(p for p in parts if p)
+    full_text = f"[{header}]\n{text}" if header else text
+
     return Chunk(
         id=f"{doc.id}-chunk{idx}",
-        text=text,
+        text=full_text,
         source=doc.source,
         course_id=doc.course_id,
         doc_type=doc.doc_type,

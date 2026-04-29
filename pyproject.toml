@@ -31,6 +31,9 @@ dev = [
     "mypy>=1.10",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["ingest", "process", "retrieval", "llm", "chatbot", "backend"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
