@@ -13,16 +13,19 @@ Canvas / Piazza / Panopto / Gradescope
         ↓  ingest
   data/raw/{source}/{course}/documents.jsonl
         ↓  chunk + embed (local HuggingFace model)
-  ChromaDB vector store
-        ↓  RAG retrieval
-  Claude (API or claude -p CLI)
-        ↓
-  Chat UI  /  CLI chatbot
+  ChromaDB vector store          Neo4j graph (concepts + prerequisites)
+        ↓                               ↓
+        └──────── hybrid retrieval ─────┘
+                        ↓
+          Claude (API or claude -p CLI)
+                        ↓
+          Chat UI  /  CLI chatbot  /  Topic Map
 ```
 
 1. **Ingest** — scrape course content into raw JSON documents
 2. **Process** — chunk documents, embed with `BAAI/bge-small-en-v1.5` (local, no API cost), index into ChromaDB
-3. **Chat** — retrieve relevant chunks, pass to Claude with guardrails that block direct problem-solving
+3. **Build graph** — use Claude to tag lectures and assignments with algorithmic topics, infer prerequisite relationships, and store as a Neo4j knowledge graph
+4. **Chat** — hybrid retrieval combines vector similarity with graph traversal (topic expansion + prerequisite walking), then passes results to Claude with guardrails that block direct problem-solving
 
 ---
 
@@ -49,7 +52,27 @@ cp .env.example .env
 
 Open `.env` and fill in the values you need (see the sections below).
 
-### 3. Configure your course
+### 3. Start Neo4j
+
+The knowledge graph requires a running Neo4j instance. The easiest way is Docker:
+
+```bash
+docker run -d \
+  --name neo4j-llm \
+  -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/yourpassword \
+  neo4j:5
+```
+
+Then set your password as an environment variable (or add it to `.env`):
+
+```bash
+export NEO4J_PASSWORD=yourpassword
+```
+
+Open [http://localhost:7474](http://localhost:7474) to explore the graph visually via Neo4j Browser.
+
+### 4. Configure your course
 
 Edit `config/courses.yaml`:
 
@@ -181,6 +204,18 @@ Downloads the embedding model on first run (~130 MB), chunks all documents, and 
 python scripts/run_pipeline.py --course 6.1220
 ```
 
+### Build the knowledge graph
+
+After ingesting and processing, populate the Neo4j graph with course concepts, lecture topics, and prerequisite relationships:
+
+```bash
+NEO4J_PASSWORD=yourpassword python scripts/build_graph.py --course-id 6.1220
+```
+
+Omit `--course-id` to build graphs for all courses in `courses.yaml`. This calls the LLM to tag each lecture and assignment with topics, then infers prerequisite edges — takes a few minutes on first run. Re-running is safe (all writes use `MERGE`).
+
+Once built, explore the graph at [http://localhost:7474](http://localhost:7474) or via the Topic Map in the dashboard.
+
 ---
 
 ## Chatbot
@@ -226,13 +261,13 @@ Protected assignment names are listed in `config/courses.yaml`.
 
 ```text
 ingest/         scrapers (Canvas implemented; Gradescope, Panopto, Piazza stubs)
-process/        chunker, embedder, anonymizer, tagger
-retrieval/      vector store, graph store, hybrid retriever
+process/        chunker, embedder, anonymizer, tagger, graph_builder
+retrieval/      vector store, Neo4j store, graph retriever, hybrid retriever
 llm/            Claude client, guardrails, prompts
 chatbot/        CLI REPL
-backend/        FastAPI server (chat, assignments, materials routes)
+backend/        FastAPI server (chat, assignments, materials, graph routes)
 frontend/       Next.js 14 web UI
-scripts/        run_ingest.py, run_process.py, run_pipeline.py
+scripts/        run_ingest.py, run_process.py, run_pipeline.py, build_graph.py
 config/         courses.yaml, settings.yaml
 data/           raw scraped docs (gitignored)
 chroma_db/      vector index (gitignored)
@@ -246,7 +281,8 @@ tests/          pytest suite
 
 1. Add an entry to `config/courses.yaml` with the course's Canvas (and optionally Gradescope/Piazza/Panopto) IDs
 2. Run `python scripts/run_pipeline.py --course <course_id>`
-3. Start the chatbot with `python chatbot/cli.py <course_id>`
+3. Run `NEO4J_PASSWORD=... python scripts/build_graph.py --course-id <course_id>`
+4. Start the chatbot with `python chatbot/cli.py <course_id>`
 
 ---
 
@@ -258,7 +294,8 @@ tests/          pytest suite
 | PDF extraction | PyMuPDF |
 | Embeddings | `BAAI/bge-small-en-v1.5` via `sentence-transformers` |
 | Vector DB | ChromaDB (local, persistent) |
-| Graph RAG | NetworkX |
+| Graph DB | Neo4j 5 (Docker or Desktop) |
+| Graph RAG | Neo4j Cypher + vector hybrid retrieval |
 | LLM | Claude (Anthropic API or `claude -p` CLI) |
 | Backend | FastAPI + SSE streaming |
 | Frontend | Next.js 14, Tailwind CSS |

@@ -36,6 +36,32 @@ def upsert_chunks(collection: chromadb.Collection, chunks: list[Chunk]) -> None:
     )
 
 
+def fetch_by_ids(collection: chromadb.Collection, ids: list[str]) -> list[Chunk]:
+    """Fetch chunks directly by their ChromaDB IDs (no embedding needed)."""
+    if not ids:
+        return []
+    results = collection.get(
+        ids=ids,
+        include=["documents", "metadatas"],
+    )
+    return [
+        Chunk(
+            id=doc_id,
+            text=text,
+            source=meta.get("source", ""),
+            course_id=meta.get("course_id", ""),
+            doc_type=meta.get("doc_type", ""),
+            metadata={k: v for k, v in meta.items() if k not in ("source", "course_id", "doc_type")},
+            score=None,
+        )
+        for doc_id, text, meta in zip(
+            results["ids"],
+            results["documents"],
+            results["metadatas"],
+        )
+    ]
+
+
 def query(
     collection: chromadb.Collection,
     query_embedding: list[float],
