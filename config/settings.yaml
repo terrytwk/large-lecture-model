@@ -17,4 +17,8 @@ llm:
   stream: true
 
 chroma_db_path: "./chroma_db"
-kuzu_db_path: "./kuzu_db"
+
+neo4j:
+  uri: "bolt://localhost:7687"
+  user: "neo4j"
+  password: ""           # set via NEO4J_PASSWORD env var; leave blank here

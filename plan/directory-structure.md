@@ -61,7 +61,7 @@ large-lecture-model/
 │   ├── __init__.py
 │   ├── base.py                    # BaseRetriever interface (retrieve(query) -> [Chunk])
 │   ├── vector_store.py            # ChromaDB read/write wrapper
-│   ├── graph_store.py             # KuzuDB / NetworkX graph read/write wrapper
+│   ├── graph_store.py             # Neo4j graph read/write wrapper (bolt driver)
 │   ├── vector_retriever.py        # semantic similarity search via vector DB
 │   ├── graph_retriever.py         # GraphRAG: graph traversal + concept expansion
 │   └── hybrid_retriever.py        # combines vector + graph, selectable via config
@@ -202,7 +202,7 @@ class Chunk:
 data/
 .env
 chroma_db/
-kuzu_db/
+neo4j/                         # Neo4j data (if using local Docker volume)
 __pycache__/
 *.pyc
 .venv/
@@ -221,7 +221,7 @@ dashboard/frontend/.next/
 - `spacy` + `en_core_web_sm` — NER for anonymization
 - `sentence-transformers` — HuggingFace embeddings
 - `chromadb` — vector store
-- `networkx` — graph (prototype); `kuzu` — persistent graph (production)
+- `neo4j` + `neo4j` Python driver — graph DB; `networkx` kept for unit tests (no server needed)
 - `piazza-api` — Piazza scraper
 - `pyyaml` — config parsing
 

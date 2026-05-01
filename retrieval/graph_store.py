@@ -1,7 +1,10 @@
-"""Concept graph for GraphRAG using NetworkX (prototype) or KuzuDB (production).
+"""Concept graph for GraphRAG — placeholder using NetworkX for unit tests.
 
-Nodes: topics, lectures, assignments, Piazza threads.
-Edges: "covers", "assessed_by", "discussed_in", "prereq_of".
+Production target: Neo4j via the official `neo4j` Python driver (bolt://localhost:7687).
+Node labels: Topic, Lecture, Assignment, PiazzaThread, Course.
+Relationship types: COVERS, ASSESSED_BY, DISCUSSED_IN, PREREQ_OF, BELONGS_TO.
+
+This file will be replaced by neo4j_store.py once the Neo4j implementation lands.
 """
 from __future__ import annotations
 import json

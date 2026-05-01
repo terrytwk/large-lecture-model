@@ -58,6 +58,8 @@ class _CliBackend:
         return [self._cli, "--print", "--dangerously-skip-permissions", "--model", self.model]
 
     def complete(self, system: str, user: str) -> str:
+        system = system.replace("\x00", "")
+        user = user.replace("\x00", "")
         cmd = self._base_cmd() + ["--system-prompt", system, user]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
         if result.returncode != 0:
@@ -66,7 +68,8 @@ class _CliBackend:
         return result.stdout.strip()
 
     def stream(self, system: str, messages: list[dict]) -> Iterator[str]:
-        user_prompt = _messages_to_prompt(messages)
+        system = system.replace("\x00", "")
+        user_prompt = _messages_to_prompt(messages).replace("\x00", "")
         cmd = self._base_cmd() + [
             "--system-prompt", system,
             "--verbose",

@@ -126,14 +126,16 @@ Two retrieval backends, both implemented and selectable:
 - Cosine similarity search over embedded chunks
 - Filter by metadata: `course`, `source`, `type`, `protected`
 
-### GraphRAG (stretch, but planned)
-- **DB**: KuzuDB (embedded graph DB) or NetworkX for prototype
+### GraphRAG
+
+- **DB**: Neo4j (local via Docker or Neo4j Desktop; also enables visualization via Neo4j Browser / Bloom)
 - **Graph structure**:
-  - Nodes: topics/concepts, lectures, assignments, Piazza threads
-  - Edges: "covers topic", "assessed by", "prerequisite of", "discussed in"
-- **Build**: LLM extracts relationships from syllabus + assignment descriptions at ingest
-- **Query**: graph traversal augments vector retrieval — e.g., find pset → find topics it covers → find lectures covering those topics
-- **Why it's powerful**: lets students navigate "what do I need to review to tackle PS5" across all content types
+  - Nodes: `Topic`, `Lecture`, `Assignment`, `PiazzaThread`, `Course`
+  - Edges: `COVERS`, `ASSESSED_BY`, `PREREQ_OF`, `DISCUSSED_IN`, `BELONGS_TO`
+- **Build**: LLM extracts relationships from syllabus + assignment descriptions at ingest; stored via official Python driver (`neo4j`)
+- **Query**: Cypher traversal augments vector retrieval — e.g., find assignment → find topics it covers → find lectures covering those topics
+- **Visualization**: Neo4j Browser / Bloom renders the concept map out of the box; frontend `TopicMap` component can embed a read-only view via the Bolt protocol or a REST API layer
+- **Why Neo4j over KuzuDB**: native visualization, mature Cypher query language, better tooling for concept map exploration, and a large ecosystem of integrations
 
 ### Hybrid Retriever (`retrieval/hybrid_retriever.py`)
 - Combines both: vector search for semantic similarity, graph traversal for structured navigation
@@ -181,7 +183,7 @@ Two retrieval backends, both implemented and selectable:
 | Embeddings | `sentence-transformers` (HuggingFace) | local, no API cost |
 | Embedding model | `BAAI/bge-small-en-v1.5` | swap-able via config |
 | Vector DB | ChromaDB (local) | upgrade path to Pinecone |
-| Graph DB | NetworkX → KuzuDB | for GraphRAG |
+| Graph DB | Neo4j (Docker / Neo4j Desktop) | for GraphRAG + visualization |
 | LLM | Claude (Anthropic SDK) | with tool use + guardrails |
 | Chatbot UI | Next.js + FastAPI (streaming) | replaces Streamlit |
 | Dashboard | Next.js (same app, /dashboard route) | Phase 3 |

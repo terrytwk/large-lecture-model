@@ -1,29 +1,42 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Assignment, Message } from "@/lib/api";
 import StatsRow from "@/components/StatsRow";
 import DeadlineTimeline from "@/components/DeadlineTimeline";
 import AssignmentCard from "@/components/AssignmentCard";
 import ChatPanel from "@/components/ChatPanel";
 
-const COURSE_ID = "6.1220";
-const COURSE_NAME = "Design and Analysis of Algorithms";
+const COURSES = [
+  { id: "6.1220", name: "Design and Analysis of Algorithms", short: "6.1220" },
+  { id: "cms.594", name: "Education Technology Studio", short: "CMS.594" },
+] as const;
+
+type CourseId = typeof COURSES[number]["id"];
+type CourseTab = "all" | CourseId;
+type FilterTab = "all" | "pending" | "submitted";
+
+interface DisplayItem {
+  assignment: Assignment;
+  courseId: string;
+  courseLabel?: string;
+}
 
 function daysUntil(due: string) {
   return Math.ceil((new Date(due).getTime() - Date.now()) / 86_400_000);
 }
 
 function UrgentBanner({
-  assignment,
+  item,
   onAsk,
 }: {
-  assignment: Assignment;
-  onAsk: () => void;
+  item: DisplayItem;
+  onAsk: (courseId: string, name: string) => void;
 }) {
-  if (!assignment.due_at) return null;
-  const d = daysUntil(assignment.due_at);
-  if (d > 3 || assignment.submitted) return null;
+  const { assignment: a, courseId, courseLabel } = item;
+  if (!a.due_at) return null;
+  const d = daysUntil(a.due_at);
+  if (d > 3 || a.submitted) return null;
 
   const isToday = d === 0;
   const isOverdue = d < 0;
@@ -51,16 +64,21 @@ function UrgentBanner({
             ? "Due today!"
             : `Due in ${d} day${d !== 1 ? "s" : ""}`}
           {" · "}
-          {assignment.name}
+          {a.name}
         </p>
-        {assignment.topics.length > 0 && (
-          <p className="text-xs text-slate-500 mt-0.5 truncate">
-            Topics: {assignment.topics.join(", ")}
-          </p>
-        )}
+        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+          {courseLabel && (
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">
+              {courseLabel}
+            </span>
+          )}
+          {a.topics.length > 0 && (
+            <p className="text-xs text-slate-500 truncate">Topics: {a.topics.join(", ")}</p>
+          )}
+        </div>
       </div>
       <button
-        onClick={onAsk}
+        onClick={() => onAsk(courseId, a.name)}
         className={`shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
           isOverdue
             ? "border-rose-300 text-rose-700 hover:bg-rose-100"
@@ -73,32 +91,96 @@ function UrgentBanner({
   );
 }
 
-type FilterTab = "all" | "pending" | "submitted";
-
 export default function DashboardPage() {
-  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [courseAssignments, setCourseAssignments] = useState<Record<string, Assignment[]>>({});
   const [loadingData, setLoadingData] = useState(true);
+  const [selectedTab, setSelectedTab] = useState<CourseTab>("all");
   const [filter, setFilter] = useState<FilterTab>("all");
 
   // Chat state
   const [chatOpen, setChatOpen] = useState(false);
+  const [chatCourseId, setChatCourseId] = useState<string>("6.1220");
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
   const [autoQuery, setAutoQuery] = useState<string | null>(null);
 
-  // Keep messages fresh for streaming closure
   const messagesRef = useRef<Message[]>([]);
   messagesRef.current = messages;
+  const chatCourseIdRef = useRef(chatCourseId);
+  chatCourseIdRef.current = chatCourseId;
 
+  // Fetch all courses in parallel on mount
   useEffect(() => {
-    fetch(`/api/assignments?course_id=${COURSE_ID}`)
-      .then((r) => r.json())
-      .then((d) => {
-        setAssignments(d.assignments ?? []);
-        setLoadingData(false);
-      })
-      .catch(() => setLoadingData(false));
+    const fetches = COURSES.map((c) =>
+      fetch(`/api/assignments?course_id=${c.id}`)
+        .then((r) => r.json())
+        .then((d) => [c.id, d.assignments ?? []] as [string, Assignment[]])
+        .catch(() => [c.id, []] as [string, Assignment[]])
+    );
+    Promise.all(fetches).then((results) => {
+      const map: Record<string, Assignment[]> = {};
+      for (const [id, asgns] of results) map[id] = asgns;
+      setCourseAssignments(map);
+      setLoadingData(false);
+    });
   }, []);
+
+  // Sync chat course when switching to a specific course tab
+  useEffect(() => {
+    if (selectedTab !== "all") setChatCourseId(selectedTab);
+  }, [selectedTab]);
+
+  // Build display items from selected tab
+  const displayItems = useMemo((): DisplayItem[] => {
+    if (selectedTab === "all") {
+      return COURSES.flatMap((c) =>
+        (courseAssignments[c.id] ?? []).map((a) => ({
+          assignment: a,
+          courseId: c.id,
+          courseLabel: c.short,
+        }))
+      );
+    }
+    return (courseAssignments[selectedTab] ?? []).map((a) => ({
+      assignment: a,
+      courseId: selectedTab,
+    }));
+  }, [selectedTab, courseAssignments]);
+
+  const assignments = useMemo(() => displayItems.map((d) => d.assignment), [displayItems]);
+
+  // Sorted & filtered items for the card grid
+  const sorted = useMemo(
+    () =>
+      [...displayItems]
+        .filter(({ assignment: a }) => {
+          if (filter === "pending") return !a.submitted;
+          if (filter === "submitted") return a.submitted;
+          return true;
+        })
+        .sort((x, y) => {
+          const a = x.assignment,
+            b = y.assignment;
+          if (a.submitted !== b.submitted) return a.submitted ? 1 : -1;
+          if (!a.due_at && !b.due_at) return 0;
+          if (!a.due_at) return 1;
+          if (!b.due_at) return -1;
+          return new Date(a.due_at).getTime() - new Date(b.due_at).getTime();
+        }),
+    [displayItems, filter]
+  );
+
+  // Most urgent pending assignment across displayed items
+  const urgentNext = useMemo(
+    () =>
+      displayItems
+        .filter(({ assignment: a }) => !a.submitted && a.due_at && daysUntil(a.due_at) <= 3)
+        .sort(
+          (x, y) =>
+            new Date(x.assignment.due_at!).getTime() - new Date(y.assignment.due_at!).getTime()
+        )[0] ?? null,
+    [displayItems]
+  );
 
   const handleChatSubmit = useCallback(async (query: string) => {
     const userMsg: Message = { role: "user", content: query };
@@ -111,7 +193,7 @@ export default function DashboardPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query,
-          course_id: COURSE_ID,
+          course_id: chatCourseIdRef.current,
           history: messagesRef.current,
         }),
       });
@@ -165,39 +247,22 @@ export default function DashboardPage() {
     setChatLoading(false);
   }, []);
 
-  const handleAskAbout = useCallback(
-    (assignmentName: string) => {
-      const q = `I'm working on "${assignmentName}". What topics should I study and where can I find related lectures or materials?`;
-      setAutoQuery(q);
-      setChatOpen(true);
-    },
-    []
-  );
+  const handleAskAbout = useCallback((assignmentName: string, courseId: string) => {
+    setChatCourseId(courseId);
+    setAutoQuery(
+      `I'm working on "${assignmentName}". What topics should I study and where can I find related lectures or materials?`
+    );
+    setChatOpen(true);
+  }, []);
 
   const openChat = useCallback(() => {
     setAutoQuery(null);
     setChatOpen(true);
   }, []);
 
-  // Sorted assignments: pending first, then by due date ascending
-  const sorted = [...assignments]
-    .filter((a) => {
-      if (filter === "pending") return !a.submitted;
-      if (filter === "submitted") return a.submitted;
-      return true;
-    })
-    .sort((a, b) => {
-      if (a.submitted !== b.submitted) return a.submitted ? 1 : -1;
-      if (!a.due_at && !b.due_at) return 0;
-      if (!a.due_at) return 1;
-      if (!b.due_at) return -1;
-      return new Date(a.due_at).getTime() - new Date(b.due_at).getTime();
-    });
-
-  // Next urgent assignment (pending, with soonest due date ≤ 3 days)
-  const urgentNext = assignments
-    .filter((a) => !a.submitted && a.due_at && daysUntil(a.due_at) <= 3)
-    .sort((a, b) => new Date(a.due_at!).getTime() - new Date(b.due_at!).getTime())[0] ?? null;
+  const chatCourse = COURSES.find((c) => c.id === chatCourseId);
+  const chatCourseLabel = chatCourse ? `${chatCourse.id} · ${chatCourse.name}` : chatCourseId;
+  const currentCourse = selectedTab !== "all" ? COURSES.find((c) => c.id === selectedTab) : null;
 
   const FILTERS: { key: FilterTab; label: string }[] = [
     { key: "all", label: "All" },
@@ -216,7 +281,7 @@ export default function DashboardPage() {
             </div>
             <div className="min-w-0">
               <h1 className="text-sm font-semibold text-slate-800 truncate leading-tight">
-                6.1220 · {COURSE_NAME}
+                {currentCourse ? `${currentCourse.id} · ${currentCourse.name}` : "My Courses"}
               </h1>
               <p className="text-[11px] text-slate-400 leading-tight">Spring 2026 · MIT</p>
             </div>
@@ -230,6 +295,35 @@ export default function DashboardPage() {
             <span className="hidden sm:inline">Study Assistant</span>
           </button>
         </div>
+
+        {/* Course tabs */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex border-t border-slate-100">
+            <button
+              onClick={() => setSelectedTab("all")}
+              className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
+                selectedTab === "all"
+                  ? "border-indigo-600 text-indigo-600"
+                  : "border-transparent text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              Overview
+            </button>
+            {COURSES.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => setSelectedTab(c.id)}
+                className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
+                  selectedTab === c.id
+                    ? "border-indigo-600 text-indigo-600"
+                    : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                {c.short}
+              </button>
+            ))}
+          </div>
+        </div>
       </header>
 
       {/* ── Main content ── */}
@@ -239,10 +333,7 @@ export default function DashboardPage() {
 
         {/* Urgent banner */}
         {!loadingData && urgentNext && (
-          <UrgentBanner
-            assignment={urgentNext}
-            onAsk={() => handleAskAbout(urgentNext.name)}
-          />
+          <UrgentBanner item={urgentNext} onAsk={handleAskAbout} />
         )}
 
         {/* Timeline */}
@@ -323,8 +414,14 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sorted.map((a) => (
-                <AssignmentCard key={a.id} assignment={a} onAskAbout={handleAskAbout} />
+              {sorted.map(({ assignment, courseId, courseLabel }) => (
+                <AssignmentCard
+                  key={`${courseId}-${assignment.id}`}
+                  assignment={assignment}
+                  courseId={courseId}
+                  courseLabel={courseLabel}
+                  onAskAbout={handleAskAbout}
+                />
               ))}
             </div>
           )}
@@ -340,6 +437,7 @@ export default function DashboardPage() {
         onSubmit={handleChatSubmit}
         autoQuery={autoQuery}
         onAutoQueryConsumed={() => setAutoQuery(null)}
+        courseLabel={chatCourseLabel}
       />
 
       {/* Floating action button (when chat is closed) */}

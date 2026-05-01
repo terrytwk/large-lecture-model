@@ -80,10 +80,12 @@ function MaterialBadge({ m }: { m: MaterialResult }) {
 
 interface Props {
   assignment: Assignment;
-  onAskAbout: (name: string) => void;
+  courseId: string;
+  courseLabel?: string;
+  onAskAbout: (name: string, courseId: string) => void;
 }
 
-export default function AssignmentCard({ assignment: a, onAskAbout }: Props) {
+export default function AssignmentCard({ assignment: a, courseId, courseLabel, onAskAbout }: Props) {
   const [materials, setMaterials] = useState<MaterialResult[]>([]);
   const [loadingMats, setLoadingMats] = useState(false);
 
@@ -91,14 +93,14 @@ export default function AssignmentCard({ assignment: a, onAskAbout }: Props) {
     if (a.topics.length === 0) return;
     setLoadingMats(true);
     const q = a.topics.slice(0, 3).join(" ");
-    fetch(`/api/materials/search?q=${encodeURIComponent(q)}&course_id=6.1220`)
+    fetch(`/api/materials/search?q=${encodeURIComponent(q)}&course_id=${courseId}`)
       .then((r) => r.json())
       .then((d) => {
         setMaterials((d.results ?? []).slice(0, 4));
         setLoadingMats(false);
       })
       .catch(() => setLoadingMats(false));
-  }, [a.topics]);
+  }, [a.topics, courseId]);
 
   const scorePercent =
     a.score !== null && a.max_score ? Math.round((a.score / a.max_score) * 100) : null;
@@ -107,7 +109,14 @@ export default function AssignmentCard({ assignment: a, onAskAbout }: Props) {
     <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col gap-3 hover:shadow-md hover:border-slate-300 transition-all">
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-semibold text-slate-800 text-sm leading-snug">{a.name}</h3>
+        <div className="min-w-0">
+          {courseLabel && (
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block mb-0.5">
+              {courseLabel}
+            </span>
+          )}
+          <h3 className="font-semibold text-slate-800 text-sm leading-snug">{a.name}</h3>
+        </div>
         <DeadlineBadge due_at={a.due_at} submitted={a.submitted} />
       </div>
 
@@ -188,7 +197,7 @@ export default function AssignmentCard({ assignment: a, onAskAbout }: Props) {
       {/* Footer actions */}
       <div className="mt-auto flex items-center gap-2">
         <button
-          onClick={() => onAskAbout(a.name)}
+          onClick={() => onAskAbout(a.name, courseId)}
           className="flex-1 text-xs font-medium text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-400 hover:bg-indigo-50 rounded-lg px-3 py-2 transition-colors text-left flex items-center gap-1.5"
         >
           <span>💬</span>

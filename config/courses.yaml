@@ -11,3 +11,6 @@ courses:
       - "Warm-up Set"   # matches all warm-ups
     # "always" | "until_grades_released" | "until: YYYY-MM-DD"
     protected_window: "always"
+  "cms.594":
+    name: "Education Technology Studio"
+    canvas_course_id: "37315"      # Spring 

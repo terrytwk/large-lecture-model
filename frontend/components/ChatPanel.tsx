@@ -27,6 +27,7 @@ interface Props {
   messages: Message[];
   loading: boolean;
   onSubmit: (query: string) => void;
+  courseLabel: string;
   /** When set, the panel will pre-fill and auto-submit this query. */
   autoQuery?: string | null;
   onAutoQueryConsumed?: () => void;
@@ -38,6 +39,7 @@ export default function ChatPanel({
   messages,
   loading,
   onSubmit,
+  courseLabel,
   autoQuery,
   onAutoQueryConsumed,
 }: Props) {
@@ -102,7 +104,7 @@ export default function ChatPanel({
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white">
           <div>
             <h2 className="text-sm font-semibold">Study Assistant</h2>
-            <p className="text-xs text-indigo-200 mt-0.5">6.1220 · Design and Analysis of Algorithms</p>
+            <p className="text-xs text-indigo-200 mt-0.5">{courseLabel}</p>
           </div>
           <button
             onClick={onClose}
