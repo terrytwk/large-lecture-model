@@ -1,0 +1,180 @@
+%% APA 7th Edition — Student Pitch (no title page, no abstract)
+%% Compile: pdflatex -> biber -> pdflatex -> pdflatex
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\doublespacing
+
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage[style=apa, backend=biber]{biblatex}
+\DeclareLanguageMapping{american}{american-apa}
+\addbibresource{references.bib}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+
+\usepackage{titlesec}
+% APA Level 1: centered, bold
+\titleformat{\section}[block]{\normalfont\bfseries\centering}{}{0em}{}
+% APA Level 2: left-aligned, bold
+\titleformat{\subsection}[block]{\normalfont\bfseries}{}{0em}{}
+% APA Level 3: left-aligned, bold italic, inline
+\titleformat{\subsubsection}[runin]{\normalfont\bfseries\itshape}{}{0em}{}[.]
+
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{6pt}
+
+\usepackage{parskip}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0.5in}
+
+\pagestyle{plain}
+
+% ── Document ────────────────────────────────────────────────────────────────
+\begin{document}
+
+% Simple APA-style title block (no separate title page)
+\begin{center}
+  {\bfseries Large Lecture Model: A Behaviorally Grounded Course Intelligence
+  Platform for Student Self-Regulation}\\[6pt]
+  Tae Wook (Terry) Kim\\
+  Massachusetts Institute of Technology\\
+  CMS.594: Education Technology Studio
+\end{center}
+
+\vspace{6pt}
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+
+Course material for a single large-lecture course is scattered across Canvas,
+Gradescope, Panopto, and Piazza---each with its own interface---so a student
+preparing for an exam cannot easily cross-reference which lectures introduced a
+concept, which problem sets assessed it, and which discussion threads clarified
+it. The \textit{Large Lecture Model} (LLM) addresses this by aggregating all
+course content into a unified knowledge base exposed through two interfaces:
+(1) an AI chatbot that answers natural-language questions with cited, grounded
+responses, and (2) an assignment management dashboard linking deadlines to
+topics and lecture materials. The prototype targets MIT 6.1220 (Design and
+Analysis of Algorithms) and CMS.594 (Education Technology Studio) to validate
+the system across a large STEM lecture and a smaller HASS course; the
+architecture is parameterized to generalize to any course.
+
+% ============================================================
+\section{Concept and Final Product Vision}
+% ============================================================
+
+The system has three layers. \textbf{Data ingestion} scrapers pull content from
+all four platforms through a pipeline of chunking, PII anonymization via spaCy
+named-entity recognition, embedding generation, and LLM-based topic tagging.
+The \textbf{knowledge layer} pairs ChromaDB semantic search (filtered by content
+type and an academic integrity flag) with a Neo4j graph that connects Topics,
+Lectures, Assignments, and Discussion Threads via edges (\texttt{COVERS},
+\texttt{ASSESSED\_BY}, \texttt{PREREQ\_OF}); a hybrid retriever combines both.
+\textbf{User interfaces} consist of a Next.js chatbot backed by a FastAPI
+streaming server and an assignment dashboard with a topic map; a guardrail layer
+blocks solution requests while permitting conceptual questions.
+
+The current prototype has Canvas ingestion, vector retrieval, and a CLI
+chatbot. The final product will add Panopto and Piazza ingestion with full
+anonymization; the Neo4j graph builder and hybrid retriever; a tuned guardrail
+with instructor-configurable protection windows (\texttt{courses.yaml}); and a
+Next.js web interface with streaming citations, inline feedback, and reusable
+packaging for any instructor to deploy.
+
+% ============================================================
+\section{Theoretical Grounding}
+% ============================================================
+
+\textbf{Cognitive load.} Platform fragmentation imposes extraneous cognitive
+load \parencite{sweller1988}---students spend working memory navigating
+interfaces rather than learning. A unified natural-language interface removes
+this friction \parencite{mayer2009}, freeing attention for the material itself.
+
+\textbf{Self-regulated learning and retrieval practice.} \textcite{zimmerman2002}
+describes self-regulated learners as those who set goals, monitor progress, and
+adapt strategy; the chatbot and topic-map dashboard scaffold exactly this cycle.
+\textcite{roediger2006} showed active recall produces markedly better long-term
+retention than re-reading---asking the chatbot is retrieval practice embedded in
+a real study context. The graph's prerequisite edges further support the
+connected knowledge structures that underlie expert transfer \parencite{chi1981}.
+
+\textbf{Behavioral concept design.} A core design principle is drawn from
+course readings \parencite{cms594staff2025}: the system models behaviors---
+Posting, Asking, Submitting, Grading---in an event-based log. Because
+``behaviors hold still even when platforms do not''
+\parencite[p.~1]{cms594staff2025}, the same log serves the chatbot,
+dashboard, and future tools without re-scraping or schema migration.
+
+% ============================================================
+\section{Design Tasks}
+% ============================================================
+
+The following tasks are needed to reach a finalized product, ordered by
+dependency:
+
+\begin{enumerate}
+  \item Complete Panopto and Piazza scrapers with integrated PII anonymization;
+        build the Neo4j graph from LLM-extracted syllabus relationships.
+  \item Implement the hybrid vector+graph retriever behind a common interface.
+  \item Tune the academic integrity guardrail with per-assignment, per-date-window
+        sensitivity configured via \texttt{courses.yaml}.
+  \item Build the Next.js web interface: streaming chatbot with citations,
+        assignment dashboard, per-response feedback, and staff monitoring view;
+        audit all UI components against WCAG 2.1 AA.
+  \item Write setup documentation and configuration guide for any instructor.
+\end{enumerate}
+
+% ============================================================
+\section{Stakeholder Interview Plan}
+% ============================================================
+
+\subsection{Students (Primary Users)}
+
+Students currently enrolled in 6.1220 and CMS.594---the direct users---will be
+asked how they currently find relevant materials and what would make them trust
+or distrust a chatbot's answer. Feedback sought: navigation pain points, trust
+signals, and academic integrity concerns to calibrate the guardrail.
+
+\subsection{Course Staff (Instructors and TAs)}
+
+The instructor of record and one or two TAs from each target course. Their
+buy-in is a prerequisite for deployment. Key questions: What consumes the most
+TA office hours? Which AI assistance is acceptable? Are there content types
+(exam rubrics, partial solutions) that should never reach the system? Feedback
+sought: content scope restrictions, guardrail calibration, and instructor-facing
+features worth the setup cost.
+
+\subsection{Students with Disabilities / Accessibility Consultants}
+
+Students who use assistive technologies or MIT Digital Accessibility Services
+staff, engaged during design rather than as a retrofit. Feedback sought:
+specific accessibility barriers and modalities (voice input, simplified output)
+addressable before the final build.
+
+% ============================================================
+\section{Accessibility, Viewpoint, Localization, and Feedback}
+% ============================================================
+
+\textbf{Accessibility.} The web interface will meet WCAG 2.1 AA: semantic HTML
+for screen readers, full keyboard navigability, sufficient color contrast, and
+careful focus management for streaming responses. A plain-text output mode will
+be available for users with cognitive or attention-related needs.
+
+\textbf{Viewpoint, localization, and feedback.} The event-log architecture is
+viewpoint-neutral: a personal study view, aggregate coverage summary, and
+future advising view all project the same log without privileging one use
+\parencite{cms594staff2025}. The prototype is English-only, but the LLM layer
+handles multilingual queries natively. Per-response rating and flagging are
+logged without PII and surfaced to course staff as an aggregate monitoring view.
+
+% ============================================================
+\section{References}
+\printbibliography[heading=none]
+% ============================================================
+
+\end{document}

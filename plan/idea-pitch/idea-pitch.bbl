@@ -1,0 +1,455 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{apa/apasortcite//global/global/global}
+    \entry{chi1981}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=1667a8dc17a3d07f14543acc6c898782}{%
+           family={Chi},
+           familyi={C\bibinitperiod},
+           given={Michelene\bibnamedelimb T.\bibnamedelimi H.},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9cca1b751fea9bf48f5f66601e9ca09a}{%
+           family={Feltovich},
+           familyi={F\bibinitperiod},
+           given={Paul\bibnamedelima J.},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=799b4fb1e3ac13514248c445694de589}{%
+           family={Glaser},
+           familyi={G\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{35768d6cef9a967c7d2b27ab9fd29750}
+      \strng{fullhash}{ca0122aea60f29642315d626b460f694}
+      \strng{fullhashraw}{ca0122aea60f29642315d626b460f694}
+      \strng{bibnamehash}{ca0122aea60f29642315d626b460f694}
+      \strng{authorbibnamehash}{ca0122aea60f29642315d626b460f694}
+      \strng{authornamehash}{35768d6cef9a967c7d2b27ab9fd29750}
+      \strng{authorfullhash}{ca0122aea60f29642315d626b460f694}
+      \strng{authorfullhashraw}{ca0122aea60f29642315d626b460f694}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Cognitive Science}
+      \field{number}{2}
+      \field{title}{Categorization and Representation of Physics Problems by Experts and Novices}
+      \field{volume}{5}
+      \field{year}{1981}
+      \field{pages}{121\bibrangedash 152}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1207/s15516709cog0502_2
+      \endverb
+    \endentry
+    \entry{mayer2009}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=bcc3ded7dcfcffd5504d0475fabf58d6}{%
+           family={Mayer},
+           familyi={M\bibinitperiod},
+           given={Richard\bibnamedelima E.},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{fullhash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{fullhashraw}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{bibnamehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authorbibnamehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authornamehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authorfullhash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authorfullhashraw}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{title}{Multimedia Learning}
+      \field{year}{2009}
+    \endentry
+    \entry{cms594staff2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e0efacc28113582f87335645ebfbd136}{%
+           family={{MIT 6.1040 Staff}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{fullhash}{e0efacc28113582f87335645ebfbd136}
+      \strng{fullhashraw}{e0efacc28113582f87335645ebfbd136}
+      \strng{bibnamehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authorbibnamehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authornamehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authorfullhash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authorfullhashraw}{e0efacc28113582f87335645ebfbd136}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Course reading, Massachusetts Institute of Technology}
+      \field{title}{A Concept-Design Guide for Naming and Capturing Context}
+      \field{year}{2025}
+    \endentry
+    \entry{roediger2006}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=003577404f9c429e11867e6f0dac09aa}{%
+           family={Roediger},
+           familyi={R\bibinitperiod},
+           given={Henry\bibnamedelima L.},
+           giveni={H\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=585da0827f5f2a43fc258a4f97ee1590}{%
+           family={Karpicke},
+           familyi={K\bibinitperiod},
+           given={Jeffrey\bibnamedelima D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{fullhash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{fullhashraw}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{bibnamehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authorbibnamehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authornamehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authorfullhash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authorfullhashraw}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Science}
+      \field{number}{3}
+      \field{title}{Test-Enhanced Learning: {T}aking Memory Tests Improves Long-Term Retention}
+      \field{volume}{17}
+      \field{year}{2006}
+      \field{pages}{249\bibrangedash 255}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1111/j.1467-9280.2006.01693.x
+      \endverb
+    \endentry
+    \entry{sweller1988}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=9612a12907a8ce45293ceed61ce5e09b}{%
+           family={Sweller},
+           familyi={S\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{fullhash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{fullhashraw}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{bibnamehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authorbibnamehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authornamehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authorfullhash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authorfullhashraw}{9612a12907a8ce45293ceed61ce5e09b}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Cognitive Science}
+      \field{number}{2}
+      \field{title}{Cognitive Load During Problem Solving: {E}ffects on Learning}
+      \field{volume}{12}
+      \field{year}{1988}
+      \field{pages}{257\bibrangedash 285}
+      \range{pages}{29}
+      \verb{doi}
+      \verb 10.1207/s15516709cog1202_4
+      \endverb
+    \endentry
+    \entry{zimmerman2002}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=58316125b0d9778cca6c8c29d7ce3c60}{%
+           family={Zimmerman},
+           familyi={Z\bibinitperiod},
+           given={Barry\bibnamedelima J.},
+           giveni={B\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{fullhash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{fullhashraw}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{bibnamehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authorbibnamehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authornamehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authorfullhash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authorfullhashraw}{58316125b0d9778cca6c8c29d7ce3c60}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Theory Into Practice}
+      \field{number}{2}
+      \field{title}{Becoming a Self-Regulated Learner: {A}n Overview}
+      \field{volume}{41}
+      \field{year}{2002}
+      \field{pages}{64\bibrangedash 70}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1207/s15430421tip4102_2
+      \endverb
+    \endentry
+  \enddatalist
+  \datalist[entry]{apa/global//global/global/global}
+    \entry{chi1981}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=1667a8dc17a3d07f14543acc6c898782}{%
+           family={Chi},
+           familyi={C\bibinitperiod},
+           given={Michelene\bibnamedelimb T.\bibnamedelimi H.},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9cca1b751fea9bf48f5f66601e9ca09a}{%
+           family={Feltovich},
+           familyi={F\bibinitperiod},
+           given={Paul\bibnamedelima J.},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=799b4fb1e3ac13514248c445694de589}{%
+           family={Glaser},
+           familyi={G\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{35768d6cef9a967c7d2b27ab9fd29750}
+      \strng{fullhash}{ca0122aea60f29642315d626b460f694}
+      \strng{fullhashraw}{ca0122aea60f29642315d626b460f694}
+      \strng{bibnamehash}{ca0122aea60f29642315d626b460f694}
+      \strng{authorbibnamehash}{ca0122aea60f29642315d626b460f694}
+      \strng{authornamehash}{35768d6cef9a967c7d2b27ab9fd29750}
+      \strng{authorfullhash}{ca0122aea60f29642315d626b460f694}
+      \strng{authorfullhashraw}{ca0122aea60f29642315d626b460f694}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Cognitive Science}
+      \field{number}{2}
+      \field{title}{Categorization and Representation of Physics Problems by Experts and Novices}
+      \field{volume}{5}
+      \field{year}{1981}
+      \field{pages}{121\bibrangedash 152}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1207/s15516709cog0502_2
+      \endverb
+    \endentry
+    \entry{mayer2009}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=bcc3ded7dcfcffd5504d0475fabf58d6}{%
+           family={Mayer},
+           familyi={M\bibinitperiod},
+           given={Richard\bibnamedelima E.},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{fullhash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{fullhashraw}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{bibnamehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authorbibnamehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authornamehash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authorfullhash}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \strng{authorfullhashraw}{bcc3ded7dcfcffd5504d0475fabf58d6}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{title}{Multimedia Learning}
+      \field{year}{2009}
+    \endentry
+    \entry{cms594staff2025}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e0efacc28113582f87335645ebfbd136}{%
+           family={{MIT 6.1040 Staff}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{fullhash}{e0efacc28113582f87335645ebfbd136}
+      \strng{fullhashraw}{e0efacc28113582f87335645ebfbd136}
+      \strng{bibnamehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authorbibnamehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authornamehash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authorfullhash}{e0efacc28113582f87335645ebfbd136}
+      \strng{authorfullhashraw}{e0efacc28113582f87335645ebfbd136}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Course reading, Massachusetts Institute of Technology}
+      \field{title}{A Concept-Design Guide for Naming and Capturing Context}
+      \field{year}{2025}
+    \endentry
+    \entry{roediger2006}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=003577404f9c429e11867e6f0dac09aa}{%
+           family={Roediger},
+           familyi={R\bibinitperiod},
+           given={Henry\bibnamedelima L.},
+           giveni={H\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=585da0827f5f2a43fc258a4f97ee1590}{%
+           family={Karpicke},
+           familyi={K\bibinitperiod},
+           given={Jeffrey\bibnamedelima D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{fullhash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{fullhashraw}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{bibnamehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authorbibnamehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authornamehash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authorfullhash}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \strng{authorfullhashraw}{8f5fe4b5ca8b1cb21377389b25a98e5e}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Science}
+      \field{number}{3}
+      \field{title}{Test-Enhanced Learning: {T}aking Memory Tests Improves Long-Term Retention}
+      \field{volume}{17}
+      \field{year}{2006}
+      \field{pages}{249\bibrangedash 255}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1111/j.1467-9280.2006.01693.x
+      \endverb
+    \endentry
+    \entry{sweller1988}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=9612a12907a8ce45293ceed61ce5e09b}{%
+           family={Sweller},
+           familyi={S\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{fullhash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{fullhashraw}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{bibnamehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authorbibnamehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authornamehash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authorfullhash}{9612a12907a8ce45293ceed61ce5e09b}
+      \strng{authorfullhashraw}{9612a12907a8ce45293ceed61ce5e09b}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Cognitive Science}
+      \field{number}{2}
+      \field{title}{Cognitive Load During Problem Solving: {E}ffects on Learning}
+      \field{volume}{12}
+      \field{year}{1988}
+      \field{pages}{257\bibrangedash 285}
+      \range{pages}{29}
+      \verb{doi}
+      \verb 10.1207/s15516709cog1202_4
+      \endverb
+    \endentry
+    \entry{zimmerman2002}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=58316125b0d9778cca6c8c29d7ce3c60}{%
+           family={Zimmerman},
+           familyi={Z\bibinitperiod},
+           given={Barry\bibnamedelima J.},
+           giveni={B\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{fullhash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{fullhashraw}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{bibnamehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authorbibnamehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authornamehash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authorfullhash}{58316125b0d9778cca6c8c29d7ce3c60}
+      \strng{authorfullhashraw}{58316125b0d9778cca6c8c29d7ce3c60}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Theory Into Practice}
+      \field{number}{2}
+      \field{title}{Becoming a Self-Regulated Learner: {A}n Overview}
+      \field{volume}{41}
+      \field{year}{2002}
+      \field{pages}{64\bibrangedash 70}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1207/s15430421tip4102_2
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

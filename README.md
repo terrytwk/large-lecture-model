@@ -8,19 +8,7 @@ Built for MIT 6.1220 (Design and Analysis of Algorithms), but designed to work w
 
 ## How it works
 
-```text
-Canvas / Piazza / Panopto / Gradescope
-        ↓  ingest
-  data/raw/{source}/{course}/documents.jsonl
-        ↓  chunk + embed (local HuggingFace model)
-  ChromaDB vector store          Neo4j graph (concepts + prerequisites)
-        ↓                               ↓
-        └──────── hybrid retrieval ─────┘
-                        ↓
-          Claude (API or claude -p CLI)
-                        ↓
-          Chat UI  /  CLI chatbot  /  Topic Map
-```
+![System Architecture](plan/slides/img/system-diagram.png)
 
 1. **Ingest** — scrape course content into raw JSON documents
 2. **Process** — chunk documents, embed with `BAAI/bge-small-en-v1.5` (local, no API cost), index into ChromaDB
@@ -214,7 +202,13 @@ NEO4J_PASSWORD=yourpassword python scripts/build_graph.py --course-id 6.1220
 
 Omit `--course-id` to build graphs for all courses in `courses.yaml`. This calls the LLM to tag each lecture and assignment with topics, then infers prerequisite edges — takes a few minutes on first run. Re-running is safe (all writes use `MERGE`).
 
-Once built, explore the graph at [http://localhost:7474](http://localhost:7474) or via the Topic Map in the dashboard.
+Once built, explore the graph at [http://localhost:7474](http://localhost:7474) or via the Topic Map in the dashboard. To visualize the full course graph in Neo4j Browser, run:
+
+```cypher
+MATCH (n)-[r]->(m) RETURN n, r, m
+```
+
+![Knowledge Graph — MIT 6.1220 (196 nodes, 278 relationships)](plan/slides/img/graph-visualization.png)
 
 ---
 
@@ -239,6 +233,10 @@ npm run dev
 ```
 
 Open [http://localhost:3000/chat](http://localhost:3000/chat).
+
+| Study Assistant (Chat) | Assignment Dashboard |
+|---|---|
+| ![Chat UI](plan/slides/img/chatbot-frontend.png) | ![Dashboard](plan/slides/img/assignment-frontend.png) |
 
 ---
 

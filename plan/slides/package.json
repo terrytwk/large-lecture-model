@@ -1,0 +1,16 @@
+{
+  "name": "large-lecture-model-slides",
+  "private": true,
+  "scripts": {
+    "dev": "ulimit -n 10000; slidev slides.md --open",
+    "build": "ulimit -n 10000; slidev build slides.md",
+    "export": "ulimit -n 10000; slidev export slides.md --format pptx --output ./large-lecture-model-slides.pptx"
+  },
+  "dependencies": {
+    "@slidev/cli": "^51.0.0",
+    "@slidev/theme-default": "latest"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.59.1"
+  }
+}
