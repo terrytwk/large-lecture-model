@@ -170,66 +170,49 @@ layout: default
 layout: default
 ---
 
-# Feedback: Srini (Professor, MIT 6.1220)
+# Feedback: Srini & Eagon
 
 <div class="grid grid-cols-2 gap-3 mt-3">
 
-<div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
-  <div class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-1">The core tension</div>
-  <p class="text-slate-200 text-xs italic mb-1">"LLMs are most powerful once students already have enough understanding to use and verify them well. The challenge is helping students get there through practice."</p>
-  <p class="text-slate-500 text-xs">→ Reframed the system: assist <em>after</em> the student has engaged, not instead of engaging.</p>
-</div>
+<div>
+<div class="text-xs text-blue-300 uppercase tracking-wide font-semibold mb-2">Srini — Professor, MIT 6.1220</div>
+<div class="space-y-2">
 
 <div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
   <div class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-1">Productive struggle risk</div>
   <p class="text-slate-200 text-xs italic mb-1">"Students may use the LLM to bypass the productive struggle — that's where the learning happens."</p>
-  <p class="text-slate-500 text-xs">→ Prompted approach-first tutoring: system asks what the student has tried before helping.</p>
-</div>
-
-<div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
-  <div class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-1">LLM verification weakness</div>
-  <p class="text-slate-200 text-xs italic mb-1">"LLMs often say an approach 'could work' — they are weak at rigorous verification."</p>
-  <p class="text-slate-500 text-xs">→ Added explicit verification mode: checks runtime, edge cases, and proof gaps rather than endorsing.</p>
+  <p class="text-slate-500 text-xs">→ Approach-first tutoring: system asks what the student tried before helping.</p>
 </div>
 
 <div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
   <div class="text-blue-400 text-xs font-semibold uppercase tracking-wide mb-1">High-value use cases</div>
   <p class="text-slate-200 text-xs italic mb-1">"Concept maps, notation guides, connecting ideas across the semester — these are where it genuinely helps."</p>
-  <p class="text-slate-500 text-xs">→ Prioritized concept map view and notation cheatsheet generation as first-class features.</p>
+  <p class="text-slate-500 text-xs">→ Concept map view and notation cheatsheet promoted to first-class features.</p>
 </div>
 
 </div>
+</div>
 
----
-layout: default
----
-
-# Feedback: Eagon (TA, 6.1040 & Agentic Harness Researcher)
-
-<div class="grid grid-cols-2 gap-3 mt-3">
+<div>
+<div class="text-xs text-amber-300 uppercase tracking-wide font-semibold mb-2">Eagon — TA, 6.1040 & Agentic Harness Researcher</div>
+<div class="space-y-2">
 
 <div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
   <div class="text-amber-400 text-xs font-semibold uppercase tracking-wide mb-1">Design philosophy</div>
   <p class="text-slate-200 text-xs italic mb-1">"Design the way you can't fail — capture useful learning signals rather than trying to solve personalized learning immediately."</p>
-  <p class="text-slate-500 text-xs">→ Shifted focus to building structured representations first; chatbot is a later layer on top.</p>
+  <p class="text-slate-500 text-xs">→ Structured event-log first; chatbot is a layer on top, not the foundation.</p>
 </div>
 
 <div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
-  <div class="text-amber-400 text-xs font-semibold uppercase tracking-wide mb-1">Intermediate system first</div>
-  <p class="text-slate-200 text-xs italic mb-1">"Don't start by building a full end-to-end chatbot. Build something that captures and structures the learning process."</p>
-  <p class="text-slate-500 text-xs">→ Reinforced behavioral event-log design: concepts, prompts, chunks, and student questions as structured data.</p>
+  <div class="text-amber-400 text-xs font-semibold uppercase tracking-wide mb-1">Why not just use ChatGPT?</div>
+  <p class="text-slate-200 text-xs mb-1">General LLMs have no memory of your course. This system tracks progress — giving each stakeholder what they actually need:</p>
+  <div class="flex flex-col gap-1 mt-1">
+    <div class="flex items-start gap-1.5 text-xs text-slate-300"><span class="text-amber-400 mt-0.5">📋</span><span><strong class="text-amber-300">Staff</strong> — see where students are struggling, which topics generate the most questions, what's being missed.</span></div>
+    <div class="flex items-start gap-1.5 text-xs text-slate-300"><span class="text-green-400 mt-0.5">🎯</span><span><strong class="text-green-300">Students</strong> — see what they're missing so they can study efficiently and close gaps before exams.</span></div>
+  </div>
 </div>
 
-<div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
-  <div class="text-amber-400 text-xs font-semibold uppercase tracking-wide mb-1">Metadata & access control</div>
-  <p class="text-slate-200 text-xs italic mb-1">"Think carefully about metadata, access control, and what each retrieved chunk is <em>allowed to do</em>."</p>
-  <p class="text-slate-500 text-xs">→ Extended content-gating: each chunk carries allowed actions (explain, hint, block) alongside its metadata.</p>
 </div>
-
-<div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700">
-  <div class="text-amber-400 text-xs font-semibold uppercase tracking-wide mb-1">Previous exams</div>
-  <p class="text-slate-200 text-xs italic mb-1">"Previous exams help students understand what they need to know — but must be handled carefully."</p>
-  <p class="text-slate-500 text-xs">→ Past exams enabled in concept-map mode only; solution paths remain gated behind <code class="bg-slate-700 px-0.5 rounded">protected: true</code>.</p>
 </div>
 
 </div>
@@ -240,46 +223,26 @@ layout: default
 
 # How Feedback Was Implemented
 
-<div class="grid grid-cols-3 gap-3 mt-3">
+<div class="grid grid-cols-2 gap-3 mt-3">
 
 <div class="p-3 rounded-xl bg-blue-950/50 border border-blue-700/50">
-  <div class="text-lg mb-1">🤔</div>
-  <div class="font-bold text-blue-300 text-xs mb-1">Approach-first tutoring</div>
-  <p class="text-slate-300 text-xs leading-relaxed">System asks what the student has already tried before providing help — protecting productive struggle (Srini).</p>
-</div>
-
-<div class="p-3 rounded-xl bg-purple-950/50 border border-purple-700/50">
-  <div class="text-lg mb-1">💡</div>
-  <div class="font-bold text-purple-300 text-xs mb-1">Hint-based guidance</div>
-  <p class="text-slate-300 text-xs leading-relaxed">Responses offer the next step or a clarifying question rather than a full solution. Solution requests redirect to office hours.</p>
+  <div class="font-bold text-blue-300 text-xs mb-1">🤔 Approach-first tutoring</div>
+  <p class="text-slate-300 text-xs leading-relaxed">System asks what the student has already tried before helping — ensuring productive struggle happens before assistance kicks in.</p>
 </div>
 
 <div class="p-3 rounded-xl bg-green-950/50 border border-green-700/50">
-  <div class="text-lg mb-1">🔍</div>
-  <div class="font-bold text-green-300 text-xs mb-1">Verification mode</div>
-  <p class="text-slate-300 text-xs leading-relaxed">Dedicated mode checks an approach for correctness, runtime complexity, edge cases, and proof gaps — not endorsement (Srini).</p>
+  <div class="font-bold text-green-300 text-xs mb-1">🗺️ Concept maps & notation guides</div>
+  <p class="text-slate-300 text-xs leading-relaxed">Topic-map view and notation cheatsheet promoted to first-class features — connecting ideas across the semester where LLMs genuinely help.</p>
 </div>
 
+<div class="p-3 rounded-xl bg-purple-950/50 border border-purple-700/50">
+  <div class="font-bold text-purple-300 text-xs mb-1">🧩 Modular, transparent agent design</div>
+  <p class="text-slate-300 text-xs leading-relaxed">Each component — ingestor, retriever, guardrail, responder — is a swappable module with a clear interface. The same pipeline generalizes to any course or institution without rewiring.</p>
 </div>
-
-<div class="grid grid-cols-3 gap-3 mt-3">
 
 <div class="p-3 rounded-xl bg-amber-950/50 border border-amber-700/50">
-  <div class="text-lg mb-1">🗺️</div>
-  <div class="font-bold text-amber-300 text-xs mb-1">Concept maps & notation</div>
-  <p class="text-slate-300 text-xs leading-relaxed">Topic-map view and notation cheatsheet generation promoted to first-class features — Srini's highest-confidence use cases.</p>
-</div>
-
-<div class="p-3 rounded-xl bg-red-950/40 border border-red-700/50">
-  <div class="text-lg mb-1">🔒</div>
-  <div class="font-bold text-red-300 text-xs mb-1">Chunk-level access control</div>
-  <p class="text-slate-300 text-xs leading-relaxed">Each retrieved chunk carries an allowed-actions flag (explain / hint / block). Past exams visible in concept-map mode only (Eagon).</p>
-</div>
-
-<div class="p-3 rounded-xl bg-cyan-950/40 border border-cyan-700/50">
-  <div class="text-lg mb-1">📊</div>
-  <div class="font-bold text-cyan-300 text-xs mb-1">Staff misunderstanding dashboard</div>
-  <p class="text-slate-300 text-xs leading-relaxed">Aggregate view of common questions and blocked topics helps staff spot recurring confusions without seeing individual student data.</p>
+  <div class="font-bold text-amber-300 text-xs mb-1">📂 Per-topic chat sessions</div>
+  <p class="text-slate-300 text-xs leading-relaxed">Each topic gets its own chat thread. Students see their engagement and gaps by topic; staff see which topics generate the most questions and where students are getting stuck.</p>
 </div>
 
 </div>
@@ -466,16 +429,6 @@ background: "#0f172a"
   <p class="text-slate-300 text-base max-w-xl mx-auto mb-5">
     Large Lecture Model — so students can learn, not search.
   </p>
-  <div class="grid grid-cols-2 gap-4 max-w-lg mx-auto">
-    <div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700 text-left">
-      <span class="text-blue-400 block font-semibold text-xs mb-1">Anticipated Q1</span>
-      <span class="text-slate-300 text-sm">How do you prevent students from gaming the guardrails?</span>
-    </div>
-    <div class="p-3 rounded-lg bg-slate-800/60 border border-slate-700 text-left">
-      <span class="text-purple-400 block font-semibold text-xs mb-1">Anticipated Q2</span>
-      <span class="text-slate-300 text-sm">What happens when the AI gives a wrong answer about course content?</span>
-    </div>
-  </div>
   <div class="mt-5 text-slate-500 text-xs">
     Tae Wook (Terry) Kim · CMS.594 · MIT Spring 2026
   </div>
