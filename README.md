@@ -2,7 +2,12 @@
 
 An AI-powered study assistant for college courses. Scrapes course content from Canvas, Gradescope, Panopto, and Piazza, indexes it into a vector knowledge base, and exposes a chatbot that can answer questions, summarize lectures, and surface deadlines — without solving your problem sets for you.
 
-Built for MIT 6.1220 (Design and Analysis of Algorithms), but designed to work with any course.
+---
+
+## Documentation
+
+- [Idea pitch (PDF)](https://github.com/terrytwk/large-lecture-model/blob/main/plan/idea-pitch/idea-pitch.pdf)
+- [Presentation slides (PPTX)](https://github.com/terrytwk/large-lecture-model/blob/main/plan/slides/large-lecture-model-slides.pptx)
 
 ---
 
