@@ -65,6 +65,8 @@ export NEO4J_PASSWORD=yourpassword
 
 Open [http://localhost:7474](http://localhost:7474) to explore the graph visually via Neo4j Browser.
 
+https://github.com/user-attachments/assets/4c1d8813-cb51-4e4f-93ac-fc83f46dc8bb
+
 ### 4. Configure your course
 
 Edit `config/courses.yaml`:
