@@ -13,7 +13,6 @@ const COURSES = [
 ] as const;
 
 type CourseId = typeof COURSES[number]["id"];
-type CourseTab = "all" | CourseId;
 type FilterTab = "all" | "pending" | "submitted";
 
 interface DisplayItem {
@@ -94,8 +93,23 @@ function UrgentBanner({
 export default function DashboardPage() {
   const [courseAssignments, setCourseAssignments] = useState<Record<string, Assignment[]>>({});
   const [loadingData, setLoadingData] = useState(true);
-  const [selectedTab, setSelectedTab] = useState<CourseTab>("all");
+  // Empty set = Overview (all courses); non-empty = show only the selected subset
+  const [selectedCourses, setSelectedCourses] = useState<Set<CourseId>>(new Set());
   const [filter, setFilter] = useState<FilterTab>("all");
+
+  const isOverview = selectedCourses.size === 0;
+
+  const toggleCourse = useCallback((id: CourseId) => {
+    setSelectedCourses((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
 
   // Chat state
   const [chatOpen, setChatOpen] = useState(false);
@@ -125,27 +139,27 @@ export default function DashboardPage() {
     });
   }, []);
 
-  // Sync chat course when switching to a specific course tab
+  // Sync chat course when exactly one course is selected
   useEffect(() => {
-    if (selectedTab !== "all") setChatCourseId(selectedTab);
-  }, [selectedTab]);
-
-  // Build display items from selected tab
-  const displayItems = useMemo((): DisplayItem[] => {
-    if (selectedTab === "all") {
-      return COURSES.flatMap((c) =>
-        (courseAssignments[c.id] ?? []).map((a) => ({
-          assignment: a,
-          courseId: c.id,
-          courseLabel: c.short,
-        }))
-      );
+    if (selectedCourses.size === 1) {
+      setChatCourseId([...selectedCourses][0]);
     }
-    return (courseAssignments[selectedTab] ?? []).map((a) => ({
-      assignment: a,
-      courseId: selectedTab,
-    }));
-  }, [selectedTab, courseAssignments]);
+  }, [selectedCourses]);
+
+  // Build display items from selected courses (empty = all)
+  const displayItems = useMemo((): DisplayItem[] => {
+    const coursesToShow = isOverview
+      ? COURSES
+      : COURSES.filter((c) => selectedCourses.has(c.id));
+    const showLabels = coursesToShow.length > 1;
+    return coursesToShow.flatMap((c) =>
+      (courseAssignments[c.id] ?? []).map((a) => ({
+        assignment: a,
+        courseId: c.id,
+        courseLabel: showLabels ? c.short : undefined,
+      }))
+    );
+  }, [selectedCourses, isOverview, courseAssignments]);
 
   const assignments = useMemo(() => displayItems.map((d) => d.assignment), [displayItems]);
 
@@ -262,7 +276,13 @@ export default function DashboardPage() {
 
   const chatCourse = COURSES.find((c) => c.id === chatCourseId);
   const chatCourseLabel = chatCourse ? `${chatCourse.id} · ${chatCourse.name}` : chatCourseId;
-  const currentCourse = selectedTab !== "all" ? COURSES.find((c) => c.id === selectedTab) : null;
+  const singleCourse =
+    selectedCourses.size === 1 ? COURSES.find((c) => c.id === [...selectedCourses][0]) : null;
+  const headerTitle = isOverview
+    ? "My Courses"
+    : singleCourse
+    ? `${singleCourse.id} · ${singleCourse.name}`
+    : `${selectedCourses.size} Courses Selected`;
 
   const FILTERS: { key: FilterTab; label: string }[] = [
     { key: "all", label: "All" },
@@ -281,7 +301,7 @@ export default function DashboardPage() {
             </div>
             <div className="min-w-0">
               <h1 className="text-sm font-semibold text-slate-800 truncate leading-tight">
-                {currentCourse ? `${currentCourse.id} · ${currentCourse.name}` : "My Courses"}
+                {headerTitle}
               </h1>
               <p className="text-[11px] text-slate-400 leading-tight">Spring 2026 · MIT</p>
             </div>
@@ -296,32 +316,68 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        {/* Course tabs */}
+        {/* Course tabs — Overview clears selection; course buttons toggle membership */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex border-t border-slate-100">
+          <div className="flex items-center gap-1 border-t border-slate-100 py-2">
             <button
-              onClick={() => setSelectedTab("all")}
-              className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-                selectedTab === "all"
-                  ? "border-indigo-600 text-indigo-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700"
+              onClick={() => setSelectedCourses(new Set())}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors ${
+                isOverview
+                  ? "bg-indigo-600 border-indigo-600 text-white"
+                  : "border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700"
               }`}
             >
-              Overview
+              All Courses
             </button>
-            {COURSES.map((c) => (
+
+            <span className="w-px h-4 bg-slate-200 mx-1 shrink-0" />
+
+            {COURSES.map((c) => {
+              const active = selectedCourses.has(c.id);
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => toggleCourse(c.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors ${
+                    active
+                      ? "bg-indigo-50 border-indigo-400 text-indigo-700"
+                      : "border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700"
+                  }`}
+                >
+                  <span
+                    className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 transition-colors ${
+                      active
+                        ? "bg-indigo-600 border-indigo-600"
+                        : "border-slate-300 bg-white"
+                    }`}
+                  >
+                    {active && (
+                      <svg
+                        className="w-2.5 h-2.5 text-white"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="1.5,5 4,7.5 8.5,2.5" />
+                      </svg>
+                    )}
+                  </span>
+                  {c.short}
+                </button>
+              );
+            })}
+
+            {!isOverview && (
               <button
-                key={c.id}
-                onClick={() => setSelectedTab(c.id)}
-                className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-                  selectedTab === c.id
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-slate-500 hover:text-slate-700"
-                }`}
+                onClick={() => setSelectedCourses(new Set())}
+                className="ml-auto text-xs text-slate-400 hover:text-slate-600 transition-colors"
               >
-                {c.short}
+                Clear
               </button>
-            ))}
+            )}
           </div>
         </div>
       </header>
