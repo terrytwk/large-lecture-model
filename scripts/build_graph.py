@@ -39,10 +39,7 @@ def main() -> None:
     settings = yaml.safe_load(Path("config/settings.yaml").read_text())
     courses_cfg = yaml.safe_load(Path("config/courses.yaml").read_text())
 
-    llm = LLMClient(
-        model=settings["llm"]["model"],
-        max_tokens=settings["llm"]["max_tokens"],
-    )
+    llm = LLMClient.from_config(settings["llm"])
 
     if args.course_id:
         course_ids = [args.course_id]

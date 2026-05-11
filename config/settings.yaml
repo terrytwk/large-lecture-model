@@ -12,7 +12,8 @@ guardrails:
   sensitivity: "permissive"        # "conservative" | "permissive"
 
 llm:
-  model: "claude-sonnet-4-6"
+  provider: "auto"                 # "auto" | "openai" | "codex" | "anthropic" | "claude"
+  model: "gpt-5.4-mini"
   max_tokens: 2048
   stream: true
 

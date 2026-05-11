@@ -17,8 +17,8 @@ An AI-powered study assistant for college courses. Scrapes course content from C
 
 1. **Ingest** — scrape course content into raw JSON documents
 2. **Process** — chunk documents, embed with `BAAI/bge-small-en-v1.5` (local, no API cost), index into ChromaDB
-3. **Build graph** — use Claude to tag lectures and assignments with algorithmic topics, infer prerequisite relationships, and store as a Neo4j knowledge graph
-4. **Chat** — hybrid retrieval combines vector similarity with graph traversal (topic expansion + prerequisite walking), then passes results to Claude with guardrails that block direct problem-solving
+3. **Build graph** — use an LLM to tag lectures and assignments with algorithmic topics, infer prerequisite relationships, and store as a Neo4j knowledge graph
+4. **Chat** — hybrid retrieval combines vector similarity with graph traversal (topic expansion + prerequisite walking), then passes results to an LLM with guardrails that block direct problem-solving
 
 ---
 
@@ -106,17 +106,19 @@ https://canvas.mit.edu/courses/37219
 
 ## LLM backend
 
-The chatbot works with or without an Anthropic API key:
+The chatbot and graph builder use `config/settings.yaml` to select an LLM provider. The default is `provider: "auto"`, which prefers OpenAI-compatible options before Claude:
 
 | Scenario | What happens |
 | --- | --- |
-| `ANTHROPIC_API_KEY` is set in `.env` | Uses the Anthropic API directly (fastest, supports prompt caching) |
-| No API key | Falls back to `claude -p` CLI (requires [Claude Code](https://claude.ai/code) to be installed and logged in) |
+| `OPENAI_API_KEY` is set in `.env` | Uses the OpenAI API directly |
+| No OpenAI API key, `codex` CLI is installed and logged in | Uses `codex exec` |
+| `ANTHROPIC_API_KEY` is set in `.env` | Uses the Anthropic API directly |
+| No API key, `claude` CLI is installed and logged in | Uses `claude -p` |
 
-To use the API, add to `.env`:
+To force a backend, set `llm.provider` to `openai`, `codex`, `anthropic`, or `claude`. To use the default OpenAI API backend, add to `.env`:
 
 ```text
-ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...
 ```
 
 ---
@@ -268,7 +270,7 @@ Protected assignment names are listed in `config/courses.yaml`.
 ingest/         scrapers (Canvas implemented; Gradescope, Panopto, Piazza stubs)
 process/        chunker, embedder, anonymizer, tagger, graph_builder
 retrieval/      vector store, Neo4j store, graph retriever, hybrid retriever
-llm/            Claude client, guardrails, prompts
+llm/            provider client, guardrails, prompts
 chatbot/        CLI REPL
 backend/        FastAPI server (chat, assignments, materials, graph routes)
 frontend/       Next.js 14 web UI
@@ -301,7 +303,7 @@ tests/          pytest suite
 | Vector DB | ChromaDB (local, persistent) |
 | Graph DB | Neo4j 5 (Docker or Desktop) |
 | Graph RAG | Neo4j Cypher + vector hybrid retrieval |
-| LLM | Claude (Anthropic API or `claude -p` CLI) |
+| LLM | OpenAI API, `codex exec`, Anthropic API, or `claude -p` |
 | Backend | FastAPI + SSE streaming |
 | Frontend | Next.js 14, Tailwind CSS |
 | PII anonymization | spaCy NER + regex |

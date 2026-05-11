@@ -1,4 +1,4 @@
-"""Tool schemas for Claude tool use."""
+"""Tool schemas for LLM tool use."""
 
 TOOLS = [
     {

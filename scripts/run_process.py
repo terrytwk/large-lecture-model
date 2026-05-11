@@ -1,9 +1,11 @@
 """Chunk, embed, and index all raw documents for a course into ChromaDB."""
 from __future__ import annotations
+
 import argparse
 import json
 import sys
 from pathlib import Path
+
 import yaml
 from dotenv import load_dotenv
 
@@ -41,7 +43,9 @@ def main(course_id: str, correct_transcripts: bool = False) -> None:
         from llm.client import LLMClient
         from process.transcript_corrector import correct_transcripts as _correct
         # max_tokens must cover a full corrected segment (~3000 words ≈ 4000+ tokens)
-        llm = LLMClient(max_tokens=6000)
+        llm_cfg = dict(s.get("llm", {}))
+        llm_cfg["max_tokens"] = 6000
+        llm = LLMClient.from_config(llm_cfg)
         print("Correcting transcripts with LLM...")
         docs = _correct(docs, llm)
 

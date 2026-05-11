@@ -1,12 +1,15 @@
 """Shared FastAPI dependency providers (loaded once, reused across requests)."""
 from __future__ import annotations
+
 import os
 from functools import lru_cache
 from pathlib import Path
+
 import yaml
-from retrieval.vector_store import get_client, get_collection
-from retrieval.vector_retriever import VectorRetriever
+
 from llm.client import LLMClient
+from retrieval.vector_retriever import VectorRetriever
+from retrieval.vector_store import get_client, get_collection
 
 
 @lru_cache
@@ -31,7 +34,7 @@ def get_retriever(course_id: str = "6.1220") -> VectorRetriever:
 
 def get_llm_client() -> LLMClient:
     s = get_settings()
-    return LLMClient(model=s["llm"]["model"], max_tokens=s["llm"]["max_tokens"])
+    return LLMClient.from_config(s["llm"])
 
 
 def get_neo4j_driver():

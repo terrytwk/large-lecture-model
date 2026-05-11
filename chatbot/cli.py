@@ -1,7 +1,9 @@
 """Interactive CLI REPL — dev interface without spinning up the full web stack."""
 from __future__ import annotations
+
 import sys
 from pathlib import Path
+
 import yaml
 from dotenv import load_dotenv
 
@@ -15,11 +17,11 @@ def main(course_id: str = "6.1220") -> None:
     courses = yaml.safe_load((ROOT / "config/courses.yaml").read_text())
     course_cfg = courses["courses"][course_id]
 
-    from retrieval.vector_store import get_client, get_collection
-    from retrieval.vector_retriever import VectorRetriever
     from llm.client import LLMClient
     from llm.guardrails import check
     from llm.prompts import CHAT_SYSTEM, SOURCE_TEMPLATE
+    from retrieval.vector_retriever import VectorRetriever
+    from retrieval.vector_store import get_client, get_collection
 
     collection = get_collection(get_client(settings["chroma_db_path"]), course_id)
     retriever = VectorRetriever(
@@ -27,7 +29,7 @@ def main(course_id: str = "6.1220") -> None:
         embed_model=settings["embedding"]["model"],
         device=settings["embedding"]["device"],
     )
-    llm = LLMClient(model=settings["llm"]["model"], max_tokens=settings["llm"]["max_tokens"])
+    llm = LLMClient.from_config(settings["llm"])
     protected = course_cfg.get("protected_assignments", [])
     system = CHAT_SYSTEM.format(course_name=course_cfg["name"])
     history: list[dict] = []
